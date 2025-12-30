@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOAQUIN MAX CUEVAS VENTURA | Portafolio 2025 - Arquitectura y diseño gráfico</title>
+    
+    <!-- SEO BÁSICO -->
+    <meta name="description" content="Portafolio profesional de Joaquin Max: Arquitecto y Diseñador Gráfico en La Paz, Bolivia. Proyectos de arquitectura, branding e identidad visual.">
+    <meta name="keywords" content="arquitectura, diseño gráfico, portafolio, La Paz, Bolivia, branding, identidad visual">
+    <meta name="author" content="Joaquin Max">
+    <meta name="robots" content="index, follow">
+    
+    <!-- OPEN GRAPH (Facebook/LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="JOAQUIN MAX CUEVAS VENTURA | Portafolio 2025">
+    <meta property="og:description" content="Arquitectura y diseño dráfico">
+    <meta property="og:image" content="https://tudominio.com/og-image.jpg">
+    <meta property="og:url" content="https://tudominio.com/">
+    <meta property="og:site_name" content="Joaquin Max Cuevas Ventura Portfolio">
+    <meta property="og:locale" content="es_ES">
+    
+    <!-- TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JOAQUIN MAX | Portafolio 2025">
+    <meta name="twitter:description" content="Arquitectura & Diseño Gráfico. Proyectos de arquitectura, branding e identidad visual.">
+    <meta name="twitter:image" content="https://tudominio.com/twitter-card.jpg">
+    
+    <!-- FAVICON (placeholder) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📐</text></svg>">
+    
+    <!-- TEMA COLOR MÓVIL -->
+    <meta name="theme-color" content="#050505">
+    <meta name="msapplication-navbutton-color" content="#050505">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- 1. PRECONNECTS OPTIMIZADOS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    
+    <!-- 2. TIPOGRAFÍA -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- 3. ESTILOS DFLIP & ICONOS -->
+    <link href="https://cdn.jsdelivr.net/npm/dflip@2.1.9/css/dflip.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/dflip@2.1.9/css/themify-icons.min.css" rel="stylesheet">
+    
+    <!-- 4. ESTILOS TIPPY (animación) -->
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css">
+
+    <style>
+        /* --- SISTEMA DE DISEÑO --- */
+        :root {
+            --bg-color: #050505;      
+            --accent-color: #dc6b2f;
+            --text-main: #FFFFFF;     
+            --ui-opacity: 0.8;
+            --transition-smooth: cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* RESET Y BASE */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: 'Archivo', sans-serif !important;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* REDUCIR MOVIMIENTO PARA ACCESIBILIDAD */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* FOCUS VISIBLE PARA ACCESIBILIDAD */
+        :focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+
+        /* FONDO GRANULADO */
+        #grained-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            will-change: opacity;
+        }
+
+        /* CONTENEDOR DEL LIBRO */
+        #flipbook-container {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            z-index: 10; 
+        }
+
+        /* LOADER DE CARGA */
+        #pdf-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-color);
+            z-index: 1000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #pdf-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            margin-top: 20px;
+            color: var(--text-main);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        /* ERROR STATE */
+        #error-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: var(--bg-color);
+            z-index: 1001;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #error-container.visible {
+            display: flex;
+        }
+
+        .error-icon {
+            font-size: 48px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            color: var(--text-main);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .error-message {
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        .error-retry {
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            font-family: 'Archivo', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.3s var(--transition-smooth), box-shadow 0.3s ease;
+        }
+
+        .error-retry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(220, 107, 47, 0.4);
+        }
+
+        /* --- PERSONALIZACIÓN UI DFLIP --- */
+        .df-ui-wrapper {
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+            padding-bottom: 40px !important;
+        }
+
+        .df-ui-btn {
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            border-radius: 50% !important;
+            color: var(--text-main) !important;
+            margin: 0 6px !important;
+            width: 40px !important;
+            height: 40px !important;
+            transition: all 0.3s var(--transition-smooth);
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .df-ui-btn:hover,
+        .df-ui-btn:focus-visible,
+        .df-ui-btn.active {
+            color: var(--bg-color) !important;
+            background: var(--accent-color) !important;
+            border-color: var(--accent-color) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(220, 107, 47, 0.4) !important;
+        }
+
+        /* Input de página */
+        .df-ui-page input {
+            background: transparent !important;
+            border: none !important;
+            color: var(--text-main) !important;
+            font-family: 'Archivo', sans-serif !important;
+            font-weight: 700;
+        }
+        
+        .df-ui-page label { display: none !important; }
+
+        /* Ocultar elementos innecesarios */
+        .df-ui-share, .df-ui-download, .df-ui-more { display: none !important; }
+
+        /* --- MODAL SWEETALERT2 PERSONALIZADO --- */
+        .swal2-popup {
+            background: #111 !important;
+            border: 1px solid #333;
+            color: #fff !important;
+            font-family: 'Archivo', sans-serif !important;
+            border-radius: 0 !important;
+        }
+
+        .swal2-title { 
+            color: #fff !important; 
+            font-weight: 800 !important; 
+            letter-spacing: 1px; 
+        }
+
+        .swal2-html-container { 
+            color: #aaa !important; 
+        }
+
+        .swal2-close {
+            color: #666 !important;
+            transition: color 0.2s ease;
+        }
+
+        .swal2-close:hover {
+            color: var(--accent-color) !important;
+        }
+
+        .swal2-close:focus {
+            box-shadow: none !important;
+        }
+        
+        /* Links en el modal de contacto */
+        .contact-link {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            border: 1px solid #333;
+            padding: 15px;
+            cursor: pointer;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .contact-link:hover,
+        .contact-link:focus-visible {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .contact-link i {
+            margin-right: 12px;
+            color: var(--accent-color);
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .contact-link .copy-hint {
+            margin-left: auto;
+            font-size: 10px;
+            opacity: 0.4;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-link.copied {
+            border-color: #4CAF50 !important;
+            color: #4CAF50 !important;
+        }
+
+        .contact-link.copied i {
+            color: #4CAF50 !important;
+        }
+
+        .contact-location {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            color: #666;
+            font-size: 12px;
+            padding: 10px 15px;
+        }
+
+        .contact-location i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        /* --- TIPPY TOOLTIP --- */
+        .tippy-box[data-theme~='custom'] {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            font-family: 'Archivo', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 2px;
+        }
+
+        .tippy-box[data-theme~='custom'] .tippy-arrow {
+            color: var(--accent-color);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .df-ui-btn {
+                width: 36px !important;
+                height: 36px !important;
+                margin: 0 4px !important;
+            }
+
+            .contact-link {
+                font-size: 14px;
+                padding: 12px;
+            }
+
+            .contact-link .copy-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div id="pdf-loader" role="status" aria-live="polite" aria-label="Cargando portafolio">
+        <div class="loader-spinner" aria-hidden="true"></div>
+        <div class="loader-text">Cargando portafolio...</div>
+    </div>
+
+    <!-- ERROR STATE -->
+    <div id="error-container" role="alert" aria-live="assertive">
+        <div class="error-icon" aria-hidden="true">
+            <i class="ti-alert"></i>
+        </div>
+        <div class="error-title">No se pudo cargar el documento</div>
+        <div class="error-message">
+            Hubo un problema al cargar el documento. Por favor, verifica tu conexión a internet e intenta nuevamente.
+        </div>
+        <button class="error-retry" onclick="location.reload()" aria-label="Reintentar carga del portafolio">
+            Reintentar
+        </button>
+    </div>
+
+    <!-- CONTENEDORES PRINCIPALES -->
+    <div id="grained-container" aria-hidden="true"></div>
+    <div id="flipbook-container" role="main" aria-label="Visor de portafolio interactivo"></div>
+
+    <!-- SCRIPTS: Orden optimizado -->
+    <!-- jQuery (requerido por dFlip) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    
+    <!-- dFlip Core -->
+    <script src="https://cdn.jsdelivr.net/npm/dflip@2.1.9/js/dflip.min.js"></script>
+    
+    <!-- Librerías auxiliares con defer -->
+    <script defer src="https://cdn.jsdelivr.net/npm/grained@0.0.2/grained.min.js"></script>
+    <script defer src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script defer src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        // ============================================
+        // UTILIDADES
+        // ============================================
+        
+        // Detección de dispositivo móvil
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                         || window.innerWidth < 768;
+        
+        // Detección de preferencia de movimiento reducido
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // ============================================
+        // TEXTURA DE FONDO (Optimizada para móviles)
+        // ============================================
+        function initGrain() {
+            // No inicializar en móviles o si prefiere movimiento reducido
+            if (isMobile || prefersReducedMotion) {
+                console.log('Grained.js desactivado para optimización');
+                return;
+            }
+
+            if (typeof grained === 'undefined') {
+                console.warn('Grained.js no cargado');
+                return;
+            }
+
+            try {
+                grained('#grained-container', {
+                    animate: true,
+                    patternWidth: 150,
+                    patternHeight: 150,
+                    grainOpacity: 0.03,
+                    grainDensity: 1,
+                    grainWidth: 1,
+                    grainHeight: 1
+                });
+            } catch(e) {
+                console.warn('Error inicializando grained:', e);
+            }
+        }
+
+        // ============================================
+        // FUNCIONALIDAD COPIAR AL PORTAPAPELES
+        // ============================================
+        async function copyToClipboard(text, element) {
+            try {
+                await navigator.clipboard.writeText(text);
+                
+                // Feedback visual
+                const originalText = element.querySelector('.copy-hint')?.textContent;
+                const hintEl = element.querySelector('.copy-hint');
+                
+                element.classList.add('copied');
+                if (hintEl) hintEl.textContent = '¡COPIADO!';
+                
+                setTimeout(() => {
+                    element.classList.remove('copied');
+                    if (hintEl) hintEl.textContent = originalText || 'COPIAR';
+                }, 2000);
+                
+                return true;
+            } catch (err) {
+                // Fallback para navegadores antiguos
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    element.classList.add('copied');
+                    setTimeout(() => element.classList.remove('copied'), 2000);
+                } catch (e) {
+                    console.error('Error al copiar:', e);
+                }
+                
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // ============================================
+        // MODAL DE CONTACTO
+        // ============================================
+        function showContactModal() {
+            Swal.fire({
+                title: 'JOAQUIN MAX CUEVAS VENTURA',
+                html: `
+                    <div style="margin-bottom:20px; font-size:12px; opacity:0.6; letter-spacing:2px;">
+                        ARQUITECTURA Y DISEÑO GRÁFICO
+                    </div>
+                    <button type="button" class="contact-link" 
+                            data-copy="JoACKo333@gmail.com"
+                            aria-label="Copiar email: JoACKo333@gmail.com"
+                            tabindex="0">
+                        <i class="ti-email" aria-hidden="true"></i>
+                        <span>JoACKo333@gmail.com</span>
+                        <span class="copy-hint">COPIAR</span>
+                    </button>
+                    <button type="button" class="contact-link" 
+                            data-copy="+59178834651"
+                            aria-label="Copiar teléfono: +591 788 34 651"
+                            tabindex="0">
+                        <i class="ti-mobile" aria-hidden="true"></i>
+                        <span>+591 788 34 651</span>
+                        <span class="copy-hint">COPIAR</span>
+                    </button>
+                    <div class="contact-location">
+                        <i class="ti-location-pin" aria-hidden="true"></i>
+                        <span>La Paz, Bolivia</span>
+                    </div>
+                `,
+                showConfirmButton: false,
+                showCloseButton: true,
+                background: '#050505',
+                backdrop: 'rgba(0,0,0,0.85)',
+                customClass: {
+                    popup: 'swal-contact-popup'
+                },
+                didOpen: () => {
+                    // Agregar event listeners para copiar
+                    document.querySelectorAll('.contact-link[data-copy]').forEach(link => {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const textToCopy = this.dataset.copy;
+                            copyToClipboard(textToCopy, this);
+                        });
+                        
+                        // Soporte para teclado
+                        link.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                const textToCopy = this.dataset.copy;
+                                copyToClipboard(textToCopy, this);
+                            }
+                        });
+                    });
+                }
+            });
+        }
+
+        // ============================================
+        // MANEJO DE ERRORES PDF
+        // ============================================
+        function showPdfError() {
+            document.getElementById('pdf-loader').classList.add('hidden');
+            document.getElementById('error-container').classList.add('visible');
+        }
+
+        function hideLoader() {
+            document.getElementById('pdf-loader').classList.add('hidden');
+        }
+
+        // ============================================
+        // INICIALIZACIÓN DFLIP
+        // ============================================
+        jQuery(document).ready(function($) {
+            
+            // Timeout para detección de error de carga
+            const loadTimeout = setTimeout(() => {
+                if (!window.flipbookLoaded) {
+                    console.error('Timeout: PDF no cargado');
+                    showPdfError();
+                }
+            }, 30000); // 30 segundos timeout
+            
+            // NOMBRE DEL PDF
+            const pdfName = "PORTAFOLIO_2025_JoaquinMaxCuevasVentura_v01.pdf";
+
+            const bookOptions = {
+                source: pdfName,
+                webgl: true,
+                height: "100%",
+                duration: prefersReducedMotion ? 400 : 800,
+                backgroundColor: "transparent",
+                pageMode: 1, 
+                singlePageMode: false,
+                
+                // Traducciones
+                text: {
+                    toggleSound: "Sonido",
+                    toggleThumbnails: "Vistas",
+                    toggleOutline: "Índice",
+                    toggleFullscreen: "Pantalla Completa"
+                },
+                
+                // Controles visibles
+                allControls: "altPrev,pageNumber,altNext,outline,thumbnail,zoomIn,zoomOut,fullScreen,more",
+                
+                // Callback de éxito
+                onReady: function(scene) {
+                    window.flipbookLoaded = true;
+                    clearTimeout(loadTimeout);
+                    hideLoader();
+                    
+                    // Inicializar grano después de que cargue el flipbook
+                    initGrain();
+                    
+                    // A. INYECTAR BOTÓN DE CONTACTO
+                    const contactBtn = $(`
+                        <div class="df-ui-btn df-ui-contact" 
+                             id="btn-contact" 
+                             role="button"
+                             tabindex="0"
+                             aria-label="Abrir información de contacto"
+                             data-tippy-content="CONTACTO">
+                            <i class="ti-user" aria-hidden="true"></i>
+                        </div>
+                    `);
+                    $('.df-ui-wrapper').append(contactBtn);
+
+                    // B. LÓGICA DEL BOTÓN DE CONTACTO
+                    contactBtn.on('click keydown', function(e) {
+                        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+                        e.preventDefault();
+                        showContactModal();
+                    });
+
+                    // C. AÑADIR ARIA-LABELS A BOTONES NATIVOS
+                    const buttonLabels = {
+                        '.df-ui-prev, .df-ui-alt-prev': 'Página anterior',
+                        '.df-ui-next, .df-ui-alt-next': 'Página siguiente',
+                        '.df-ui-zoomIn': 'Acercar zoom',
+                        '.df-ui-zoomOut': 'Alejar zoom',
+                        '.df-ui-fit': 'Ajustar a pantalla',
+                        '.df-ui-thumbnail': 'Ver miniaturas',
+                        '.df-ui-outline': 'Ver índice',
+                        '.df-ui-fullscreen': 'Pantalla completa',
+                        '.df-ui-sound': 'Activar/desactivar sonido'
+                    };
+
+                    Object.entries(buttonLabels).forEach(([selector, label]) => {
+                        $(selector).attr({
+                            'aria-label': label,
+                            'role': 'button',
+                            'tabindex': '0'
+                        });
+                    });
+
+                    // D. TOOLTIPS (Tippy.js)
+                    const tooltipData = {
+                        '.df-ui-prev, .df-ui-alt-prev': 'ANTERIOR',
+                        '.df-ui-next, .df-ui-alt-next': 'SIGUIENTE',
+                        '.df-ui-zoomIn': 'ACERCAR',
+                        '.df-ui-zoomOut': 'ALEJAR',
+                        '.df-ui-fit': 'AJUSTAR',
+                        '.df-ui-thumbnail': 'MINIATURAS',
+                        '.df-ui-outline': 'ÍNDICE',
+                        '.df-ui-fullscreen': 'FULLSCREEN',
+                        '.df-ui-sound': 'SONIDO'
+                    };
+
+                    Object.entries(tooltipData).forEach(([selector, content]) => {
+                        $(selector).attr('data-tippy-content', content);
+                    });
+
+                    // Inicializar Tippy si está disponible
+                    if (typeof tippy !== 'undefined') {
+                        tippy('[data-tippy-content]', {
+                            theme: 'custom',
+                            animation: prefersReducedMotion ? false : 'scale',
+                            touch: false,
+                            placement: 'top',
+                            delay: [200, 0]
+                        });
+                    }
+                },
+                
+                // Callback de error
+                onError: function(error) {
+                    console.error('Error cargando PDF:', error);
+                    clearTimeout(loadTimeout);
+                    showPdfError();
+                }
+            };
+
+            // Verificar que el archivo exista antes de inicializar
+            fetch(pdfName, { method: 'HEAD' })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('PDF no encontrado');
+                    }
+                    // Inicializar flipbook
+                    $("#flipbook-container").flipBook(bookOptions.source, bookOptions);
+                })
+                .catch(error => {
+                    console.error('Error verificando PDF:', error);
+                    showPdfError();
+                });
+        });
+
+        // ============================================
+        // OPTIMIZACIÓN: Pausar animaciones cuando no visible
+        // ============================================
+        document.addEventListener('visibilitychange', function() {
+            const grainContainer = document.getElementById('grained-container');
+            if (grainContainer) {
+                grainContainer.style.animationPlayState = document.hidden ? 'paused' : 'running';
+            }
+        });
+    </script>
+
+</body>
+</html>
