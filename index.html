@@ -15,7 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/dflip/css/themify-icons.min.css" rel="stylesheet" type="text/css">
 
     <style>
-        /* --- CONFIGURACIÓN VISUAL (IDENTIDAD COMPARTIDA) --- */
+        /* --- CONFIGURACIÓN VISUAL --- */
         :root {
             --bg-color: #050505;      
             --accent-color: #dc6b2f;
@@ -31,7 +31,7 @@
             overflow: hidden;
         }
 
-        /* Capa de Ruido (Fondo) */
+        /* Capa de Ruido */
         #grained-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -47,7 +47,7 @@
             z-index: 10; 
         }
 
-        /* --- INTERFAZ MINIMALISTA (ESTILO STUPOR) --- */
+        /* --- INTERFAZ MINIMALISTA --- */
         .df-ui-wrapper {
             background: transparent !important;
             box-shadow: none !important;
@@ -55,7 +55,7 @@
             padding-bottom: 30px !important;
         }
 
-        /* Botones Limpios (Sin bordes, solo iconos) */
+        /* Botones Limpios */
         .df-ui-btn {
             background: transparent !important;
             border: none !important;
@@ -78,7 +78,7 @@
             text-shadow: 0 0 10px rgba(220, 107, 47, 0.5);
         }
 
-        /* Corrección del Folio (Input de página) */
+        /* Corrección del Folio */
         .df-ui-page {
             width: auto !important;
             min-width: 0 !important;
@@ -101,19 +101,17 @@
         }
         .df-ui-btn.df-ui-prev, .df-ui-btn.df-ui-next { margin: 0 2px !important; }
 
-        /* --- GESTIÓN DE HIPERVÍNCULOS DEL PDF --- */
-        /* Esto hace que los links funcionen pero oculta la caja amarilla fea */
+        /* --- GESTIÓN DE HIPERVÍNCULOS --- */
         .df-page-content .df-link, .df-page-content a { 
             opacity: 0 !important; 
             background: transparent !important; 
             cursor: pointer !important;
         }
-        /* Al pasar el mouse, el cursor cambia, pero no el color */
         .df-page-content .df-link:hover, .df-page-content a:hover { 
             opacity: 0 !important; 
         }
 
-        /* --- VENTANA MODAL INFO (CONTACTO) --- */
+        /* --- VENTANA MODAL INFO (AJUSTADA) --- */
         .modal-overlay {
             display: none; 
             position: fixed;
@@ -143,36 +141,39 @@
         .modal-contact {
             margin-top: 30px;
             border-top: 1px solid #222;
-            padding-top: 20px;
+            padding-top: 25px; /* Un poco más de aire arriba */
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 18px; /* Separación más limpia entre bloques */
         }
 
-        /* Estilos para links de contacto */
+        /* --- ESTILOS DE CONTACTO (REDUCIDOS) --- */
         .contact-link {
-            color: #888;
+            color: #666; /* Un gris un poco más oscuro para la etiqueta */
             text-decoration: none;
-            font-size: 13px;
-            letter-spacing: 1px;
+            font-size: 11px; /* REDUCIDO: Antes 13px */
+            letter-spacing: 2px; /* MÁS ESPACIADO: Para elegancia técnica */
+            text-transform: uppercase;
             transition: 0.2s;
             cursor: pointer;
-            padding: 5px;
+            padding: 0;
         }
+        
         .contact-link span {
             display: block;
             color: #fff;
-            font-weight: 600;
-            font-size: 16px;
-            margin-top: 5px;
+            font-weight: 400; /* REDUCIDO: Antes 600, ahora más fino */
+            font-size: 14px; /* REDUCIDO: Antes 16px */
+            letter-spacing: 0.5px;
+            margin-top: 4px; /* Menos espacio entre etiqueta y dato */
         }
-        .contact-link:hover { color: var(--accent-color); transform: scale(1.05); }
+
+        .contact-link:hover { color: var(--accent-color); }
         .contact-link:hover span { color: var(--accent-color); }
 
         .close-modal { position: absolute; top: -50px; right: 0; color: #666; font-size: 30px; cursor: pointer; transition: 0.2s; font-weight: 100; }
         .close-modal:hover { color: var(--accent-color); }
         
-        /* Icono "i" custom */
         .ti-info-custom:before { content: "\e645"; } 
 
     </style>
@@ -182,7 +183,7 @@
     <!-- FONDO -->
     <div id="grained-container"></div>
 
-    <!-- MODAL INFO (CONTACTO) -->
+    <!-- MODAL INFO -->
     <div id="infoModal" class="modal-overlay">
         <div class="modal-content">
             <span class="close-modal" onclick="toggleInfo()">&times;</span>
@@ -196,21 +197,21 @@
                 <p>Arquitectura y diseño gráfico</p>
                 
                 <div class="modal-contact">
-                    <!-- EMAIL: Abre cliente de correo -->
+                    <!-- EMAIL -->
                     <a href="mailto:JoACKo333@gmail.com" class="contact-link" title="Enviar correo">
-                        EMAIL
+                        CORREO
                         <span>JoACKo333@gmail.com</span>
                     </a>
 
-                    <!-- TELÉFONO: Copia al portapapeles -->
+                    <!-- TELÉFONO -->
                     <div class="contact-link" onclick="copyPhone()" title="Copiar número">
                         TELÉFONO / WHATSAPP
                         <span id="phone-display">+591 78834651</span>
                     </div>
 
+                    <!-- UBICACIÓN -->
                     <div class="contact-link" style="cursor: default; pointer-events: none;">
-                        UBICACIÓN
-                        <span style="color: #666;">La Paz, Bolivia</span>
+                        La Paz, Bolivia
                     </div>
                 </div>
             </div>
@@ -226,33 +227,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/grained/0.0.2/grained.min.js"></script>
 
     <script>
-        // 1. INICIAR EL GRANO (Fondo)
+        // 1. INICIAR EL GRANO
         try {
             grained('#grained-container', {
-                "animate": true,
-                "patternWidth": 100,
-                "patternHeight": 100,
-                "grainOpacity": 0.05,
-                "grainDensity": 1,
-                "grainWidth": 1,
-                "grainHeight": 1
+                "animate": true, "patternWidth": 100, "patternHeight": 100,
+                "grainOpacity": 0.05, "grainDensity": 1, "grainWidth": 1, "grainHeight": 1
             });
         } catch(e) { console.log("Error grano"); }
 
-        // 2. FUNCIONES DE CONTACTO
+        // 2. FUNCIONES CONTACTO
         function copyPhone() {
             const phone = "+591 78834651";
             navigator.clipboard.writeText(phone).then(() => {
                 const display = document.getElementById('phone-display');
                 const originalText = display.innerText;
                 
-                // Feedback visual
                 display.innerText = "¡NÚMERO COPIADO!";
                 display.style.color = "var(--accent-color)";
+                display.style.fontWeight = "600";
                 
                 setTimeout(() => {
                     display.innerText = originalText;
-                    display.style.color = "#fff";
+                    display.style.color = ""; // Volver al color CSS original (blanco/hover)
+                    display.style.fontWeight = "400";
                 }, 2000);
             });
         }
@@ -279,18 +276,16 @@
         // 4. INICIAR LIBRO
         jQuery(document).ready(function() {
             
-            // NOMBRE EXACTO DE TU PDF
-            var pdfName = "PORTAFOLIO_2025_JoaquinMaxCuevasVentura_v01.pdf";
+            var pdfName = "PORTAFOLIO_2025_JoaquinCuevas_WEB.pdf";
 
             var bookOptions = {
                 source: pdfName,
-                webgl: true, // CLAVE: Activa el motor 3D que suele manejar mejor los links
+                webgl: true,
                 height: "100%",
                 duration: 700, 
                 backgroundColor: "transparent",
                 disableFolderPath: true, 
 
-                // Textos de interfaz traducidos
                 text: {
                     toggleSound: "SONIDO",
                     toggleThumbnails: "VISTA",
@@ -302,13 +297,10 @@
                     zoomOut: "ZOOM -"
                 },
                 
-                // Mismos controles que STUPOR
                 allControls: "altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen",
                 hideControls: "share,download,more",
 
                 onReady: function(scene) {
-                    // Inyectar botón Info/Perfil al final de la barra
-                    // Usamos el icono 'ti-info-alt' para mantener consistencia con los otros visualizadores
                     var infoBtn = $('<div class="df-ui-btn df-ui-info" id="btn-info-custom" title="CONTACTO / INFO"><i class="ti-info-alt"></i></div>');
                     infoBtn.on('click', function() { toggleInfo(); });
                     
